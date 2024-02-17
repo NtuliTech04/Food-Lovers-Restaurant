@@ -40,3 +40,6 @@
 
 ## Payment Feedback
 <img alt="payment feedback" src="/FLRApplication/Content/Custom/images/screenshots/Paid.png">
+
+## Email Feedbacks
+<img alt="emails feedback" src="/FLRApplication/Content/Custom/images/screenshots/FLR Emails.png">

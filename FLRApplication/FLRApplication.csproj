@@ -295,6 +295,7 @@
     <Content Include="Content\Custom\images\screenshots\Customize.png" />
     <Content Include="Content\Custom\images\screenshots\Delivery Addresses.png" />
     <Content Include="Content\Custom\images\screenshots\Discount Applied.png" />
+    <Content Include="Content\Custom\images\screenshots\FLR Emails.png" />
     <Content Include="Content\Custom\images\screenshots\Home.png" />
     <Content Include="Content\Custom\images\screenshots\Login.png" />
     <Content Include="Content\Custom\images\screenshots\Loyalty Points.png" />

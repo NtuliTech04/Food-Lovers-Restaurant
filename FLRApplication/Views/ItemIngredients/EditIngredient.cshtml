@@ -1,0 +1,95 @@
+﻿@model FLRApplication.Models.Ingredient
+
+@{
+    ViewBag.Title = "EditIngredient";
+}
+
+<h2>EditIngredient</h2>
+
+
+@using (Html.BeginForm("EditIngredient", "ItemIngredients", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Ingredient</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IngredID)
+        @Html.HiddenFor(model => model.ItemID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IngredName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IngredName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IngredName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IngreDesc, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IngreDesc, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IngreDesc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SoldIn, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SoldIn, new List<SelectListItem>
+                                       {
+                                         new SelectListItem {Text = "Quantity"},
+                                         new SelectListItem {Text = "Mass"}
+                                       }, "--Select--", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SoldIn, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IngredImage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control" type="file" name="Ingred" id="Ingred" onchange="readURL(this);" required="required" />
+                @Html.ValidationMessageFor(model => model.IngredImage, "", new { @class = "text-danger" })
+                <img id="image_preview" src="#" alt="" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="@Url.Action("ItemIngredientVM","ItemIngredients", new {Id = Model.ItemID })">Back</a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        //image preview
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image_preview')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    @Scripts.Render("~/bundles/ValidateInput")}

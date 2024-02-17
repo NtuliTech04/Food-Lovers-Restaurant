@@ -1,0 +1,80 @@
+﻿@model FLRApplication.Models.Ingredient
+
+@{
+    ViewBag.Title = "DeleteIngredient";
+}
+
+<h2>DeleteIngredient</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Ingredient</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MenuItem.ItemName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MenuItem.ItemName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IngredName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IngredName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IngreDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IngreDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoldIn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoldIn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InitAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InitAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IngredPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IngredImage)
+        </dt>
+
+        <dd>
+            <img src="/ItemIngredients/RetrieveImage/@Model.IngredID" alt="" width=150 height=100 />
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Cancel", "Index", "MenuItems")
+        </div>
+    }
+</div>

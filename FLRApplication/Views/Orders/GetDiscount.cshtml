@@ -1,0 +1,55 @@
+﻿@model FLRApplication.ViewModels.DiscountViewModel
+
+@{
+    ViewBag.Title = "Get Discount";
+}
+
+<h2>Get Discount</h2>
+@using (Html.BeginForm("GetDiscount", "Orders", FormMethod.Post, new { role = "form"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Discount.OrderID)
+    @Html.HiddenFor(x => x.Points.Email)
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Available Points</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Points.Available, new { htmlAttributes = new { @Type = "number", @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Points to spend</label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" id="toSpend" required="required" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Order Total (Excl. Delivery)</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Payment.OrderTotal, new { htmlAttributes = new { @Type = "number", @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Discount.DiscountAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Discount.DiscountAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Discount.DiscountAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-yes">Apply Discount</button>
+            <a href="" class="btn btn-no">Cancel</a>
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/ValidateInput")
+@Scripts.Render("~/Content/Custom/js/converter.js")
+@Scripts.Render("~/Scripts/bootstrap.js")

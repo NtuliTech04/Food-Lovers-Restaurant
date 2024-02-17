@@ -1,0 +1,125 @@
+﻿@model List<FLRApplication.Models.Ingredient>
+
+@{
+    ViewBag.Title = "Customize Item";
+}
+
+<link href="~/Content/Custom/css/modal.css" rel="stylesheet" type="text/css" media="all" />
+
+<div class="jumbotron">
+    <div class="container" style="margin-top:5vh;">
+
+        @{ FLRApplication.Models.Ingredient menuItem = (FLRApplication.Models.Ingredient)TempData["MenuItem"]; }
+
+        <h2 class="text-center"><b>Customize Item Ingredients</b></h2>
+        <br /><br />
+        <!---/Menu-Item Details-->
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <img src="/MenuItems/RetrieveImage/@menuItem.ItemID" alt="" width=250 height=150 />
+            </div>
+            <div class="col-md-5">
+                <h3 class=""><b>@menuItem.MenuItem.ItemName</b></h3>
+                <div>@menuItem.MenuItem.ItemDesc</div>
+            </div>
+            <div class="col-md-4 text-right">
+                <div class="row" style="margin-top:10vh;">
+                    <div class="col-md-6">
+                        <a class="btn btn-danger" href="@Url.Action(actionName: "DontCustomize", controllerName: "Home", routeValues: null)">
+                            Cancel Customizing
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-warning" href="@Url.Action(actionName: "RestoreDefaults", controllerName: "Home", routeValues: new { Id = menuItem.ItemID })">
+                            Restore Defaults
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix" style="margin-bottom:5vh;"></div>
+        <!---//Menu-Item Details-->
+
+        <table class="table table-hover">
+            <tr>
+                <th hidden="hidden"></th>
+                <th>
+                    Ingredient
+                </th>
+                <th>
+                    Name
+                </th>
+                <th class="text-center">
+                    Amount
+                </th>
+                <th class="text-center">
+                    Actions
+                </th>
+            </tr>
+
+            @foreach (var ingredient in (List<FLRApplication.Models.Ingredient>)TempData["Ingredients"])
+            {
+                <tr>
+                    <td hidden="hidden"></td>
+                    <td>
+                        <img src="/ItemIngredients/RetrieveImage/@ingredient.IngredID" alt="" width=150 height=100 />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => ingredient.IngredName)
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-default" style="width:100%">@ingredient.InitAmount</a>
+                    </td>
+                    <td class="text-center">
+                        @if (ingredient.InitAmount == "0" || ingredient.InitAmount == "None")
+                        {
+                            <a href="@Url.Action("MinusIngred", "Home", new {Id = ingredient.IngredID})" class="btn btn-default disabled"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("MinusIngred", "Home", new {Id = ingredient.IngredID})" class="btn btn-default"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                        }
+                        @if (ingredient.InitAmount == "Extra")
+                        {
+                            <a href="@Url.Action("PlusIngred", "Home", new {Id = ingredient.IngredID})" class="btn btn-default disabled"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("PlusIngred", "Home", new {Id = ingredient.IngredID})" class="btn btn-default"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                        }
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td hidden="hidden"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-center">
+                    <a class="btn btn-primary btn-open">Finish Customizing</a>
+                </td>
+            </tr>
+        </table>
+        <section class="modal" id="myModal" aria-hidden="true">
+            <div class="modal-header">
+                <div class="text-right">
+                    <button class="btn-close">⨉</button>
+                </div>
+                <h3 class="modal-title">Finish Item Customizing</h3>
+            </div>
+            <div class="text-content">
+                <p><b>NB:</b> After saving you will not be able to re-customize this item.</p>
+            </div>
+            <div class="warning-text">
+                <p>Are you sure you want to save all changes you made ?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="@Url.Action("SubmitCustoms","Home")" class="btn btn-yes">Save</a>
+                <a href="@Url.Action("CustomizeItem", "Home", new { menuItem.ItemID })" class="btn btn-no">Cancel</a>
+            </div>
+        </section>
+        <div class="overlay"></div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Content/Custom/js/normalmodal.js"></script>

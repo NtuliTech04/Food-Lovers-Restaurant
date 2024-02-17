@@ -1,0 +1,205 @@
+﻿@model List<FLRApplication.Models.CartItem>
+
+@{
+    ViewBag.Title = "View Cart";
+}
+
+<link href="~/Content/Custom/css/modal.css" rel="stylesheet" type="text/css" media="all" />
+
+<div class="jumbotron">
+    <div class="container" style="margin-top:5vh;">
+        <h2 class="text-center"><b>Shopping Cart Items</b></h2>
+        <br /><br />
+        @ViewBag.OrderFailed
+        @if (Model.Count() == 0)
+        {
+            <h2 class="text-info">No items in your cart</h2>
+            <br />
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default"><i class="fa fa-arrow-left"></i> Please Continue Shopping</a>
+        }
+        else
+        {
+            <table class="table table-hover">
+                <tr>
+                    <th hidden="hidden"></th>
+                    <th>Menu Item</th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Customize
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th></th>
+                </tr>
+
+                @for (int item = 0; item < Model.Count(); item++)
+                {
+                    <tr>
+                        <td hidden="hidden">
+                            @Html.EditorFor(modelItem => Model[item].CartItemID)
+                        </td>
+                        <td class="text-left">
+                            <img src="/MenuItems/RetrieveImage/@Model[item].ItemID" alt="" height=80 width=130 />
+                            <div>
+                                @if (Model[item].Customized == true)
+                                {
+                                    <span><b>Customized</b></span>
+                                    <ul>
+                                        @foreach (var pref in Model[item].Preferences.Split(','))
+                                        {
+                                            <li style="list-style:none">
+                                                <span>&#8594;</span> @pref
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[item].MenuItem.ItemName)
+                        </td>
+                        <td>
+                            @if (Model[item].Quantity == 1)
+                            {
+                                <a href="@Url.Action("DecQty", "Home", new {Id = Model[item].CartItemID})" class="btn btn-default disabled"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("DecQty", "Home", new {Id = Model[item].CartItemID})" class="btn btn-default"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                            }
+                            <a class="btn btn-default" style="width:20%">@Model[item].Quantity</a>
+                            <a href="@Url.Action("IncQty", "Home", new {Id = Model[item].CartItemID })" class="btn btn-default"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                        </td>
+                        <th>
+                            @if (Model[item].Customized == true)
+                            {
+                                <a href="#" class="btn btn-success disabled">Customized</a>
+                            }
+                            else if (Model[item].MenuItem.OnSpecial == true)
+                            {
+                                <a href="#" class="btn btn-success disabled">On Special</a>
+                            }
+                            else if (Model[item].MenuItem.Customizable == false)
+                            {
+                                <a href="#" class="btn btn-success disabled">Uncustomizable</a>
+                            }
+                            else
+                            {
+                            <a href="@Url.Action("CustomizeItem", "Home", new {Id = Model[item].ItemID, cartItem = Model[item].CartItemID })" class="btn btn-info">Customize</a>
+                            }
+                        </th>
+                        <th>
+                            @Model[item].QuantityPrice
+                        </th>
+                        <td>
+                            <a href="@Url.Action("RemoveFromCart", "Home", new {id = Model[item].CartItemID})" class="btn btn-default"><i class="fa fa-times"></i> Remove</a>
+                        </td>
+                    </tr>
+                }
+
+                <tr>
+                    <td hidden="hidden"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <b>Total Items: @Session["MenuItemCount"] </b>
+                    </td>
+                    <th>
+                        @Session["CartTotal"]
+                    </th>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td hidden="hidden"></td>
+                    <td>
+                        <a href="@Url.Action("EmptyCart", "Home")" class="btn btn-danger"><i class="fa fa-cart-arrow-down"></i> Empty Cart</a>
+                    </td>
+                    <td></td>
+                    <td>
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Continue Shopping</a>
+                    </td>
+                    <th>
+                        <a class="btn btn-success btn-open"><i class="fa fa-lock"></i> Checkout</a>
+                    </th>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+        }
+    </div>
+</div>
+<style>
+    /*form Wizard input Modals*/
+    .tab {
+        display: none;
+    }
+</style>
+
+<section class="modal" id="myModal" aria-hidden="true">
+    <div class="tab">
+        <div class="modal-header">
+            <div class="text-right">
+                <button class="btn-close">⨉</button>
+            </div>
+            <h3 class="modal-title">Checkout Item(s)</h3>
+        </div>
+        <div class="warning-text">
+            <p>Would you like us to deliver your order ?</p>
+        </div>
+        <div class="text-content" style="margin-top:20px;margin-bottom:-50px;">
+
+            <p><b>Yes <span>&#8594;</span></b> Yes deliver my order.</p>
+
+            <p style="top:-20px;"> <b>No<span>&#8594;</span></b> No I will collect in store.</p>
+        </div>
+
+        <div class="modal-footer">
+            <a href="@Url.Action("AddressVM", "CustomerAddresses")" class="btn btn-yes">YES</a>
+            <a onclick="nextPrev(1)" class="btn btn-no">NO</a>
+            <span class="nb-text" style="float:left;"><b>NB:</b> Additional charges for delivery may appy.</span>
+        </div>
+    </div>
+
+    <div class="tab">
+        <div class="modal-header">
+            <h3 class="modal-title">Place Order - You'll Collect From Store</h3>
+        </div>
+        <div class="palce-order text-center" style="margin-top:35px;">
+            <a href="@Url.Action("Checkout", "CheckoutInfo")" class="btn btn-yes">Checkout Items & Place Order</a>
+        </div>
+        <div class="modal-footer">
+            <span class="nb-text" style="float:left;"><b>NB:</b> Please be on time for order collection.</span>
+            <a onclick="nextPrev(-1)" class="btn btn-no">Back</a>
+        </div>
+    </div>
+</section>
+<div class="overlay"></div>
+
+
+<script type="text/javascript" src="~/Content/Custom/js/normalmodal.js"></script>
+<script type="text/javascript">
+    /*form Wizard input Modals*/
+    var currentTab = 0;
+    showTab(currentTab);
+    function showTab(n) {
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+    }
+    function nextPrev(n) {
+        var x = document.getElementsByClassName("tab");
+        x[currentTab].style.display = "none";
+        currentTab = currentTab + n;
+        showTab(currentTab);
+    }
+</script>
+
+

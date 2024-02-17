@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Verification";
+}
+
+<style>
+    .bottom-wrapper {
+        margin: 50px 0 50px 0;
+        padding: 15px 15px;
+        text-align: center;
+        background: linear-gradient(-135deg, #5BBD50, #E24425);
+        opacity: .8 !important;
+        overflow: hidden;
+    }
+
+    .message-head-bottom h4 {
+        position: relative;
+        color: #f5f5f5;
+        font-family: 'Lobster Two';
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 1px;
+    }
+
+    .success-image {
+        margin-top: 50px;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+        .success-image img {
+            height: 86px;
+            width: 86px;
+            opacity: .4;
+        }
+
+    .success-header h4 {
+        text-align: center;
+        color: #515151;
+        font-size: 20px;
+        font-family: cursive;
+        font-weight: 700;
+    }
+
+    h4 a:hover {
+        color: #E24425;
+        text-decoration: none;
+        transition: .3s ease;
+        opacity: .7;
+    }
+</style>
+
+<div class="content">
+    <div class="main">
+        <div class="container">
+            <div class="verification wow fadeInLeft" data-wow-delay="0.7s">
+                <div class="success-image">
+                    <img src="~/Content/Custom/images/pngwing.com.png" />
+                </div>
+                <div class="success-header">
+                    <h4>Your Account Is Now Active</h4>
+                </div>
+            </div>
+            <div class="bottom-wrapper wow fadeInRight" data-wow-delay="0.7s">
+                <div class="message-head-bottom">
+                    <h4 class="verification-message">Thank you for verifying your account.
+                        <a href="@Url.Action("Login","Account", routeValues:null)" id="loginLink">Click me to login <i class="fa fa-sign-in"></i></a>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,232 @@
+﻿@using FLRApplication.Models;
+@model FLRApplication.ViewModels.OrderViewModel
+
+@{
+    ViewBag.Title = "Order Summary";
+}
+
+<link href="~/Content/Custom/css/modal.css" rel="stylesheet" />
+<style>
+    table tr.table-active {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<div class="jumbotron">
+    <div class="container" style="margin-top:8vh;">
+        <h2 class="text-center"><b><u>Order Summary</u></b></h2>
+        <br />
+        @Html.HiddenFor(m => m.OrderId)
+
+        <div class="table temp-data">
+            <div class="row text-center">
+                <div class="col-12">
+                    <p class="text-success" style="font-size:20px;">@ViewBag.DiscountApplied</p>
+                    <p class="text-danger" style="font-size:20px;">@ViewBag.DiscountFail</p>
+                    @if (ViewBag.DiscountEligible == true)
+                    {
+                        <p class="text-success" style="font-size:20px;">Congratulations, you have @ViewBag.LoyaltyPoints loyalty points in the bag. Use now, or keep for later.</p>
+                        <p class="text-info" style="font-size:17px;">We will convert your loyalty points to a discount for your order, click below to begin.</p>
+                        <a href="javascript:void(0);" class="btn btn btn-primary btn-select" data-id="@Model.OrderId"><i class="fa fa-money"></i> Apply Discount</a>
+                    }
+                    else
+                    {
+                        <p class="text-danger" style="font-size:20px;">@ViewBag.PointsInsufficient</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <tr class="table-active">
+                <th colspan="5">
+                    <h4><b>Order Information</b></h4>
+                </th>
+            </tr>
+            <tr>
+                <th>Order Number</th>
+                <th>Order Date</th>
+                <th>Order Time</th>
+                <th>Delivery / Collection</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>@Model.OrderId</td>
+                <td>@Model.checkoutInfo.DateTime.ToShortDateString()</td>
+                <td>@Model.checkoutInfo.DateTime.ToShortTimeString()</td>
+                <td>@Model.checkoutInfo.Receival</td>
+                <td></td>
+            </tr>
+        </table>
+
+        <table class="table table-hover">
+            <tr class="table-active">
+                <th colspan="5">
+                    <h4><b>Order Items</b></h4>
+                </th>
+            </tr>
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Price Each</th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            @foreach (OrderItem orderItem in Model.orderItems)
+            {
+                <tr>
+                    <td>
+                        <ol style="list-style-position: inside;padding-left: 0;" type="1">
+                            <li>
+                                <span></span><b>@orderItem.MenuItem.ItemName</b>
+                            </li>
+                        </ol>
+                        <div class="customs">
+                            @if (orderItem.OrderPrefs != null)
+                            {
+                                <div><b>Item Changes</b></div>
+                                <ul>
+                                    @foreach (var prefs in orderItem.OrderPrefs.Split(','))
+                                    {
+                                        <li style="list-style:none">
+                                            <span>&#8594;</span> @prefs
+                                        </li>
+                                    }
+                                </ul>
+
+                            }
+                            @if (orderItem.MenuItem.OnSpecial == true)
+                            {
+                                <div><span>&#8594;</span> Item on special</div>
+                            }
+                        </div>
+                    </td>
+                    <td>@orderItem.Quantity</td>
+                    <td>@orderItem.ZarPrice</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+            <tr class="table-active text-center">
+                <th colspan="5">
+                    <h4><b>Order Cost & Discount</b></h4>
+                </th>
+            </tr>
+            <tr>
+                <th>Order Total</th>
+                <th>Discount Amount</th>
+                <th>Todal Due Amount</th>
+                <th>Paid Amount</th>
+                <th>Delivery Amount</th>
+            </tr>
+            <tr>
+                <td>@Model.payment.TotalZar</td>
+                <td>@Model.payment.DiscZar</td>
+                <td>@Model.payment.DueZar</td>
+                <td>@Model.payment.PaidZar</td>
+                <td>@Model.payment.DeliveryZar</td>
+            </tr>
+        </table>
+        <br />
+        @if (Model.customerAddress != null)
+        {
+            <table class="table table-hover">
+                <tr class="table-active text-center">
+                    <th colspan="5">
+                        <h4><b>Delivery Address</b></h4>
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>Street</th>
+                    <th>Surbub</th>
+                    <th>City</th>
+                    <th>Province</th>
+                    <th>Postal Code</th>
+                </tr>
+                <tr>
+                    <td>@Model.customerAddress.StreetNo</td>
+                    <td>@Model.customerAddress.Suburb</td>
+                    <td>@Model.customerAddress.City</td>
+                    <td>@Model.customerAddress.Province</td>
+                    <td>@Model.customerAddress.PosctalCode</td>
+                </tr>
+            </table>
+        }
+
+        <div class="row">
+            @if (Model.payment.DiscountApplied == false)
+            {
+                <div class="col-md-6 text-center">
+                    <a class="btn btn-success" href="@Url.Action(actionName: "MakePayment", controllerName: "Payments", routeValues: new { id = Model.OrderId })"><i class="fa fa-credit-card"></i> Make Payment</a>
+                </div>
+
+                <div class="col-md-6 text-center">
+                    <div>
+                        <a class="btn btn btn-primary" href="@Url.Action(actionName: "CheckPoints", controllerName: "Orders", routeValues: new { id = Model.OrderId })"><i class="fa fa-tags"></i> Check Loyalty Points</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12 text-center">
+                    <a class="btn btn-success" href="@Url.Action(actionName: "MakePayment", controllerName: "Payments", routeValues: new { id = Model.OrderId })"><i class="fa fa-credit-card"></i> Make Payment</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<section class="modal" id="myModal" aria-hidden="true">
+    <div class="modal-header">
+        <div class="text-right">
+            <button class="btn-close">⨉</button>
+        </div>
+        <h3 class="modal-title">Convert Loyalty Point</h3>
+    </div>
+    <div class="modal-form">
+        <div id='myModalContent'></div>
+    </div>
+</section>
+<div class="overlay"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/ValidateInput")
+    <script>
+        const modal = document.querySelector(".modal");
+        const overlay = document.querySelector(".overlay");
+
+        var TeamDetailPostBackURL = '/Orders/GetDiscount';
+        $(function () {
+            $(".btn-select").click(function () {
+                debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        modal.style.display = "block";
+                        overlay.style.display = "block";
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            $(".btn-close").click(function () {
+                overlay.style.display = "none";
+                modal.style.display = "none";
+            });
+        });
+    </script>
+}

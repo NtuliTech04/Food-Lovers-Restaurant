@@ -1,0 +1,66 @@
+﻿@model IEnumerable<FLRApplication.Models.MenuItem>
+
+@{
+    ViewBag.Title = "MenuItems";
+}
+
+<h2>MenuItems</h2>
+
+<p>
+    @Html.ActionLink("Add Menu Item", "AddMenuItem")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Category.CategName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemDesc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemImage)
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemDesc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemPrice)
+            </td>
+            <td>
+                <img src="/MenuItems/RetrieveImage/@item.ItemID" alt="" width=150 height=120 />
+            </td>
+            <td>
+                <a href="@Url.Action("PromoteItem", new { id = item.ItemID })">Manage Promotions</a>
+            </td>
+            <td>
+               <a href="@Url.Action("ItemIngredientVM","ItemIngredients", new { id = item.ItemID })">Manage Ingredients</a>
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditMenuItem", new { id = item.ItemID }) |
+                @Html.ActionLink("Details", "MenuItemDetails", new { id = item.ItemID }) |
+                @Html.ActionLink("Delete", "DeleteMenuItem", new { id = item.ItemID })
+            </td>
+        </tr>
+    }
+</table>
+@Scripts.Render("~/bundles/jqueryval")

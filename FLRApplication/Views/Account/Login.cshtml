@@ -1,0 +1,69 @@
+﻿@using FLRApplication.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+
+<style>
+    .validation-summary-errors ul li {
+        list-style: none;
+    }
+
+    .login-right a.gmail {
+        color: #E24425;
+    }
+
+    .login-right a.gmail:hover {
+        color: #5BBD50;
+        text-decoration: none;
+        transition: all .3s ease;
+    }
+</style>
+
+<div class="content">
+    <div class="container">
+        <div class="login-page">
+            <div class="account_grid">
+                <div class="col-md-6 login-left wow fadeInLeft" data-wow-delay="0.4s">
+                    <h3>NEW CUSTOMERS</h3>
+                    <p>By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.</p>
+                    <a class="acount-btn" href="@Url.Action("Register","Account")">Create an Account</a>
+                </div>
+                <div class="col-md-6 login-right wow fadeInRight" data-wow-delay="0.4s">
+                    <h3>REGISTERED CUSTOMERS</h3>
+                    @if (ViewBag.Verify != null)
+                    {
+                        <span class="verify text-info">@ViewBag.Verify</span>
+                        <a class="gmail" href="@ViewBag.Gmail" target="_blank"><i class="fa fa-envelope"></i> Gmail Accounts</a>
+                    }
+                    else
+                    {
+                        <p>If you have an account with us, please log in.</p>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    }
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <span class="Input-Label">Email  Address<label>*</label></span>
+                            @Html.TextBoxFor(m => m.Email)
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div>
+                            <span class="Input-Label">Password<label>*</label></span>
+                            @Html.PasswordFor(m => m.Password)
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <a class="forgot" href="@Url.Action("ForgotPassword", "Account")">Forgot Your Password?</a>
+                        <input type="submit" value="Login">
+                    }
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/ValidateInput")
+}

@@ -1,0 +1,225 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using FLRApplication.Models;
+@model IPagedList<FLRApplication.Models.MenuItem>
+
+@{
+    ViewBag.Title = "Welcome Home";
+}
+
+<div class="banner wow fadeInUp" data-wow-delay="0.4s" id="Home">
+    <div class="container">
+        <div class="banner-info">
+            <div class="banner-info-head text-center wow fadeInLeft" data-wow-delay="0.5s">
+                <h1>For The Love of Delicious Food</h1>
+                <div class="line">
+                    <h2>Flavors For Royalty</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="special-offers-section">
+@if (ViewBag.SpecialCount != 0)
+{
+    @Html.Partial("_SpecialPartial")
+}
+</div>
+<div class="filter-sort">
+    <div class="container">
+        <div class="filter-items">
+            <div class="form-list wow fadeInRight" data-wow-delay="0.5s">
+                @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+                {
+                    <ul class="navmain">
+                        <li>
+                            <span>Category</span>
+                            @Html.DropDownList("searchCate", ViewBag.Categories as IEnumerable<SelectListItem>, "All Categories")
+                        </li>
+                        <li>
+                            <span>Price</span>
+                            <select id="seachPrice" name="seachPrice">
+                                <option value="">Sort by price</option>
+                                <option value="descending">Price (High to Low)</option>
+                                <option value="accending">Price (Low to High)</option>
+                            </select>
+                        </li>
+                        <li>
+                            <span>Name</span>
+                            <input id="searchName" name="searchName" type="text" class="text" placeholder="Search Item">
+                        </li>
+                    </ul>
+                    <div class="srch">
+                        <button type="submit"></button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popular-restaurents" id="Popular-Restaurants">
+    <div class="container">
+        <div class="col-md-4 top-restaurents">
+            <div class="top-restaurent-head">
+                <h3>Menu Categories</h3>
+            </div>
+            <div class="top-restaurent-grids">
+                <div class="top-restaurent-logos">
+                    <div class="res-img-1 wow bounceIn" data-wow-delay="0.4s">
+                        <a href="">
+                            <img src="~/Content/Website/images/restaurent-1.jpg" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <div class="res-img-2 wow bounceIn" data-wow-delay="0.4s">
+                        <a href="">
+                            <img src="~/Content/Website/images/restaurent-2.jpg" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <div class="res-img-1 wow bounceIn" data-wow-delay="0.4s">
+                        <a href="">
+                            <img src="~/Content/Website/images/restaurent-3.jpg" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <div class="res-img-2 wow bounceIn" data-wow-delay="0.4s">
+                        <a href="">
+                            <img src="~/Content/Website/images/restaurent-4.jpg" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <div class="res-img-1 nth-grid1 wow bounceIn" data-wow-delay="0.4s">
+                        <a href="">
+                            <img src="~/Content/Website/images/restaurent-5.jpg" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <div class="res-img-2 nth-grid1 wow bounceIn" data-wow-delay="0.4s">
+                        <a href="">
+                            <img src="~/Content/Website/images/restaurent-6.jpg" class="img-responsive" alt="" />
+                        </a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 top-cuisines">
+            <div class="top-cuisine-head">
+                <h3>Menu Items</h3>
+            </div>
+            <div class="top-cuisine-grids">
+                @for (int i = 1; i <= Model.Count(); i++)
+                {
+                    if (i % 4 == 0)
+                    {
+                        <div class="top-cuisine-grid nth-grid nth-grid1 wow bounceIn" data-wow-delay="1s">
+                            <a href="@Url.Action(actionName: "AddToCart", controllerName: "Home", routeValues: new { id = Model[i-1].ItemID })"><img src="/MenuItems/RetrieveImage/@Model[i-1].ItemID" class="img-responsive" alt="" /></a>
+                            <label>@Model[i - 1].ItemName</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="top-cuisine-grid nth-grid1 wow bounceIn" data-wow-delay="1s">
+                            <a href="@Url.Action(actionName: "AddToCart", controllerName: "Home", routeValues: new { id = Model[i-1].ItemID })"><img src="/MenuItems/RetrieveImage/@Model[i-1].ItemID" class="img-responsive" alt="" /></a>
+                            <label>@Model[i - 1].ItemName</label>
+                        </div>
+                    }
+                }
+                <div class="clearfix"></div>
+            </div>
+            @if 
+             (
+                ViewBag.NoItems != null ||
+                ViewBag.NullItems != null ||
+                ViewBag.NullCateItems != null
+             ) 
+             {
+                <div class="text-danger text-center" style="font-size:20px; margin-top:20vh;">
+                    @ViewBag.NoItems
+                    @ViewBag.NullItems
+                    @ViewBag.NullCateItems
+                </div>
+             }
+
+            @Html.PagedListPager(Model,
+                page => Url.Action("Index", new
+                {
+                    page,
+                    searchCate = Request.QueryString["searchCate"],
+                    seachPrice = Request.QueryString["seachPrice"],
+                    searchName = Request.QueryString["searchName"]
+
+                }),
+                new PagedListRenderOptions()
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayPageCountAndCurrentLocation = true
+                })
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="service-section">
+    <div class="service-section-top-row">
+        <div class="container">
+            <div class="service-section-top-row-grids wow bounceInLeft" data-wow-delay="0.4s">
+                <div class="col-md-4 service-section-top-row-grid1">
+                    <h3>Table Reservations<br>Book Here!</h3>
+                </div>
+                <div class="col-md-3 service-section-top-row-grid2">
+                    <ul>
+                        <li><i class="arrow"></i></li>
+                        <li class="lists">Romantic Dates</li>
+                    </ul>
+                    <ul>
+                        <li><i class="arrow"></i></li>
+                        <li class="lists">Business Meetings</li>
+                    </ul>
+                    <ul>
+                        <li><i class="arrow"></i></li>
+                        <li class="lists">Get To Know You Meetup</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 service-section-top-row-grid3">
+                    <!-- <img src="images/lunch.png" class="img-responsive" alt="" /> -->
+                </div>
+                <div class="col-md-2 service-section-top-row-grid4 wow swing animated" data-wow-delay="0.4s">
+                    <a href=""><input type="submit" value="Book Now!"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="service-section-bottom-row">
+        <div class="container">
+            <div class="col-md-4 service-section-bottom-grid wow bounceIn " data-wow-delay="0.2s">
+                <div class="icon">
+                    <img src="~/Content/Website/images/icon1.jpg" class="img-responsive" alt="" />
+                </div>
+                <div class="icon-data">
+                    <h4>100% Service Guarantee</h4>
+                    <p>We produce quality, for great satisfaction of our food lovers.</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-4 service-section-bottom-grid wow bounceIn " data-wow-delay="0.2s">
+                <div class="icon">
+                    <img src="~/Content/Website/images/icon2.jpg" class="img-responsive" alt="" />
+                </div>
+                <div class="icon-data">
+                    <h4>Fully Secure Payment</h4>
+                    <p>We have safe and secure credit card online payment systems.</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-4 service-section-bottom-grid wow bounceIn " data-wow-delay="0.2s">
+                <div class="icon">
+                    <img src="~/Content/Website/images/icon3.jpg" class="img-responsive" alt="" />
+                </div>
+                <div class="icon-data">
+                    <h4>Track Your Order</h4>
+                    <p>Know the preparation status, and the delivery status for your order.</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

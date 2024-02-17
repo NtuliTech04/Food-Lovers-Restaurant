@@ -1,0 +1,52 @@
+﻿@model FLRApplication.Models.CustomerAddress
+
+
+<table class="container">
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.StreetNo)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.StreetNo)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.Suburb)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Suburb)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.City)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.City)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.Province)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Province)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.PosctalCode)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.PosctalCode)
+        </td>
+    </tr>
+</table>
+
+<div class="modal-footer">
+    <a href="@Url.Action("Checkout", "CheckoutInfo", new { Model.ID })" class="btn btn-yes">Confirm & Place Order</a>
+    <a href="@Url.Action("AddressVM","CustomerAddresses")" class="btn btn-no">Change Address</a>
+</div>
+
+<script type="text/javascript" src="~/Scripts/bootstrap.js"></script>

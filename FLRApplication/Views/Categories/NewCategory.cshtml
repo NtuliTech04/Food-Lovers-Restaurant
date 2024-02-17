@@ -1,0 +1,47 @@
+﻿@model FLRApplication.Models.Category
+
+@{
+    ViewBag.Title = "New Category";
+}
+
+<style>
+    .register-top-grid div {
+        float: none;
+    }
+</style>
+
+<div class="content">
+    <div class="main">
+        <div class="container">
+            <div class="register">
+                @using (Html.BeginForm("NewCategory", "Categories", FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="register-top-grid">
+                        <h3 class="text-danger">Add Menu Category</h3>
+                        <div class="wow fadeInLeft" data-wow-delay="0.4s">
+                            <span class="Input-Label">Category Name<label>*</label></span>
+                            @Html.TextBoxFor(m => m.CategName)
+                            @Html.ValidationMessageFor(model => model.CategName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">Description<label>*</label></span>
+                            @Html.TextBoxFor(m => m.Description)
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <div class="register-but">
+                        <input type="submit" value="Add Category">
+                        <div class="clearfix"> </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/ValidateInput")
+}

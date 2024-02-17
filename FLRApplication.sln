@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FLRApplication", "FLRApplication\FLRApplication.csproj", "{F48CF53E-CD03-4DE1-87E1-0E665B25007E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FLRApplication.Tests", "FLRApplication.Tests\FLRApplication.Tests.csproj", "{2AC3214D-BF98-4BDE-A18D-C3961106A283}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F48CF53E-CD03-4DE1-87E1-0E665B25007E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F48CF53E-CD03-4DE1-87E1-0E665B25007E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F48CF53E-CD03-4DE1-87E1-0E665B25007E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F48CF53E-CD03-4DE1-87E1-0E665B25007E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AC3214D-BF98-4BDE-A18D-C3961106A283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AC3214D-BF98-4BDE-A18D-C3961106A283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AC3214D-BF98-4BDE-A18D-C3961106A283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AC3214D-BF98-4BDE-A18D-C3961106A283}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0CBB443-FEAC-4695-9748-598A53083414}
+	EndGlobalSection
+EndGlobal

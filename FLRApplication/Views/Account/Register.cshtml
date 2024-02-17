@@ -1,0 +1,78 @@
+﻿@model FLRApplication.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<div class="content">
+    <div class="main">
+        <div class="container">
+            <div class="register">
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="register-top-grid">
+                        <h3 class="text-danger">PERSONAL INFORMATION</h3>
+                        <p class="text-danger">@ViewBag.EmailExist</p>
+                        <div class="wow fadeInLeft" data-wow-delay="0.4s">
+                            <span class="Input-Label">First Name<label>*</label></span>
+                            @Html.TextBoxFor(m => m.FirstName)
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">Last Name<label>*</label></span>
+                            @Html.TextBoxFor(m => m.LastName)
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">NickName</span>
+                            @Html.TextBoxFor(m => m.NickName)
+                            @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">Identity Number<label>*</label></span>
+                            @Html.TextBoxFor(m => m.RSAID)
+                            @Html.ValidationMessageFor(model => model.RSAID, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">Contact Number<label>*</label></span>
+                            @Html.TextBoxFor(m => m.ContactNumber)
+                            @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">Email Address<label>*</label></span>
+                            @Html.TextBoxFor(m => m.Email)
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="clearfix"> </div>
+                        <a class="news-letter" href="#">
+                            <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>Sign Up for Newsletter</label>
+                        </a>
+                    </div>
+                    <div class="register-bottom-grid">
+                        <h3>LOGIN INFORMATION</h3>
+                        <div class="wow fadeInLeft" data-wow-delay="0.4s">
+                            <span class="Input-Label">Password<label>*</label></span>
+                            @Html.PasswordFor(m => m.Password)
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">Confirm Password<label>*</label></span>
+                            @Html.PasswordFor(m => m.ConfirmPassword)
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <div class="register-but">
+                        <input type="submit" value="Register Now!">
+                        <div class="clearfix"> </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/ValidateInput")
+}

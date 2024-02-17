@@ -1,0 +1,58 @@
+﻿@model FLRApplication.Models.MenuItem
+
+@{
+    ViewBag.Title = "MenuItemDetails";
+}
+
+<h2>MenuItemDetails</h2>
+
+<div>
+    <h4>MenuItem</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Category.CategName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.CategName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemImage)
+        </dt>
+
+        <dd>
+            <img src="/MenuItems/RetrieveImage/@Model.ItemID" alt="" width=150 height=120 />
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditMenuItem", new { id = Model.ItemID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

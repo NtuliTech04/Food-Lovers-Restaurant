@@ -1,0 +1,156 @@
+﻿@model FLRApplication.ViewModels.AddressViewModel
+@using FLRApplication.Models;
+
+@{
+    ViewBag.Title = "AddressVM";
+}
+
+<link href="~/Content/Custom/css/modal.css" rel="stylesheet" type="text/css" media="all" />
+<link href="~/Content/Custom/css/address-table.css" rel="stylesheet" type="text/css" media="all" />
+
+<script type="text/javascript" src="~/Content/Custom/js/autocomplete.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAijkg7auhKEfGMbeSPnakprUuQmWrD2Q&libraries=places&callback=initAutocomplete"></script>
+
+
+<div class="content">
+    <div class="main">
+        <div class="container">
+            <div class="register">
+                @using (Html.BeginForm("AddressVM", "CustomerAddresses", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.Address.Email)
+                    <div class="register-top-grid" id="address">
+                        <h3>ADD NEW DELIVERY ADDRESS</h3>
+                        <p class="text-success text-center wow fadeInLeft" data-wow-delay="0.4s">@ViewBag.NewAddress</p>
+                        <p class="text-danger text-center wow fadeInLeft" data-wow-delay="0.4s">@ViewBag.DeletedAddress</p>
+
+                        <div class="wow fadeInLeft" data-wow-delay="0.4s">
+                            <span class="Input-Label">Search Address</span>
+                            <input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text">
+                        </div>
+                        <div class="wow fadeInLeft" data-wow-delay="0.4s">
+                            <span class="Input-Label">Street / House Number<label>*</label></span>
+                            @Html.EditorFor(model => model.Address.StreetNo, new { htmlAttributes = new { id = "street_number" } })
+                            @Html.ValidationMessageFor(model => model.Address.StreetNo, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">Area Name / Suburb<label>*</label></span>
+                            @Html.EditorFor(model => model.Address.Suburb, new { htmlAttributes = new { id = "route" } })
+                            @Html.ValidationMessageFor(model => model.Address.Suburb, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">City<label>*</label></span>
+                            @Html.EditorFor(model => model.Address.City, new { htmlAttributes = new { id = "locality" } })
+                            @Html.ValidationMessageFor(model => model.Address.City, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">Province<label>*</label></span>
+                            @Html.EditorFor(model => model.Address.Province, new { htmlAttributes = new { id = "administrative_area_level_1" } })
+                            @Html.ValidationMessageFor(model => model.Address.Province, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">Postal Code<label>*</label></span>
+                            @Html.EditorFor(model => model.Address.PosctalCode, new { htmlAttributes = new { id = "postal_code" } })
+                            @Html.ValidationMessageFor(model => model.Address.PosctalCode, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="wow fadeInRight" data-wow-delay="0.4s">
+                            <span class="Input-Label">country<label>*</label></span>
+                            @Html.EditorFor(model => model.Address.Country, new { htmlAttributes = new { id = "country" } })
+                            @Html.ValidationMessageFor(model => model.Address.Country, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="register-but">
+                        <input type="submit" value="Save Address">
+                    </div>
+                }
+                <div class="register-bottom-grid">
+                    <h3>SELECT FROM SAVED ADDRESSES</h3>
+                    <p style="margin:3vh 0 3vh 0; font-size:16px;" class="text-danger text-center wow fadeInLeft" data-wow-delay="0.4s">@ViewBag.AddressUsed</p>
+                    <ul class="responsive-table">
+                        <li class="table-header">
+                            <div class="col col-1">Street No.</div>
+                            <div class="col col-2">Suburb</div>
+                            <div class="col col-3">City</div>
+                            <div class="col col-4">Province</div>
+                            <div class="col col-5">Postal Code</div>
+                            <div class="col col-6 text-right">Actions</div>
+                            <div class="col col-7"></div>
+                        </li>
+                        @foreach (CustomerAddress address in Model.AddressList)
+                        {
+                            <li class="table-row">
+                                <div class="col col-1">@address.StreetNo</div>
+                                <div class="col col-2">@address.Suburb</div>
+                                <div class="col col-3">@address.City</div>
+                                <div class="col col-4">@address.Province</div>
+                                <div class="col col-5">@address.PosctalCode</div>
+                                <div class="col col-6 text-center">
+                                    <a href="javascript:void(0);" class="btn btn-primary btn-select" data-id="@address.ID"><i class="fa fa-paper-plane"></i> Select</a>
+                                </div>
+                                <div class="col col-7">
+                                    <a href="@Url.Action("RemoveAddress", "CustomerAddresses", new { id = address.ID })" class="btn btn-secondary"><i class="fa fa-trash"></i> Remove</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="clearfix"> </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="modal" id="myModal" aria-hidden="true">
+    <div class="modal-header">
+        <div class="text-right">
+            <button class="btn-close">⨉</button>
+        </div>
+        <h3 class="modal-title">Confirm Delivery Address</h3>
+    </div>
+    <div class="modal-form">
+        <div id='myModalContent'></div>
+    </div>
+</section>
+<div class="overlay"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/ValidateInput")
+    <script>
+        const modal = document.querySelector(".modal");
+        const overlay = document.querySelector(".overlay");
+
+        var TeamDetailPostBackURL = '/CustomerAddresses/MyAddress';
+        $(function () {
+            $(".btn-select").click(function () {
+                debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        modal.style.display = "block";
+                        overlay.style.display = "block";
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            $(".btn-close").click(function () {
+                overlay.style.display = "none";
+                modal.style.display = "none";
+            });
+        });
+    </script>
+}

@@ -1,0 +1,127 @@
+﻿@model FLRApplication.ViewModels.MenuIngredientVM
+@using FLRApplication.Models;
+@{
+    ViewBag.Title = "Item Ingredient";
+}
+
+<h2>Menu-Item Ingredients - View Model</h2>
+
+@using (Html.BeginForm("ItemIngredientVM", "ItemIngredients", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Add Menui-Item Ingredient</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(x => x.Ingredient.ItemID)
+
+        <!---/Menu-Item Details-->
+        <div class="form-group">
+            <div class="col-md-1">
+                <img src="/MenuItems/RetrieveImage/@Model.MenuItem.ItemID" alt="" width=150 height=120 />
+            </div>
+            <div style="margin-left:30px;" class="col-md-4">
+                <label class="control-label">@Model.MenuItem.ItemName</label>
+                <p>@Model.MenuItem.ItemDesc</p>
+            </div>
+            <div style="position:relative;display:block; top: -8em;" class="col-md-12 text-right">
+                <a class="btn btn-success" href="@Url.Action("Index","MenuItems")">Return To Menu List</a>
+            </div>
+        </div>
+        <!---//Menu-Item Details-->
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ingredient.IngredName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Ingredient.IngredName, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.Ingredient.IngredName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ingredient.IngreDesc, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Ingredient.IngreDesc, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.Ingredient.IngreDesc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ingredient.SoldIn, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Ingredient.SoldIn, new List<SelectListItem>
+                                       {
+                                         new SelectListItem {Text = "Quantity"},
+                                         new SelectListItem {Text = "Mass"}
+                                       }, "--Select--", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Ingredient.SoldIn, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ingredient.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Ingredient.Price, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.Ingredient.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ingredient.IngredImage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input class="form-control" type="file" name="Ingred" id="Ingred" onchange="readURL(this);" required="required" />
+                @Html.ValidationMessageFor(model => model.Ingredient.IngredImage, "", new { @class = "text-danger" })
+                <img id="image_preview" src="#" alt="" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@foreach (Ingredient ingredient in Model.ListIngredients)
+{
+    <table>
+        <tr>
+            <td>
+                @ingredient.IngredName
+                <img src="/ItemIngredients/RetrieveImage/@ingredient.IngredID" alt="" width=150 height=100 />
+            </td>
+        </tr>
+
+    </table>
+    <table>
+        <tr>
+            <td>
+                @Html.ActionLink("Edit", "EditIngredient", new { id = ingredient.IngredID }) |
+                @Html.ActionLink("Details", "IngredientDetails", new { id = ingredient.IngredID }) |
+                @Html.ActionLink("Delete", "DeleteIngredient", new { id = ingredient.IngredID })
+            </td>
+        </tr>
+    </table>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        //image preview
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image_preview')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    @Scripts.Render("~/bundles/ValidateInput")
+}

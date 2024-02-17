@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "Register Success";
+}
+
+
+<style>
+    .top-wrapper {
+        margin: 50px 0 50px 0;
+        padding: 15px 15px;
+        text-align: center;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        background: linear-gradient(-135deg, #E24425, #5BBD50);
+        opacity: .8 !important; 
+    }
+    .bottom-wrapper {
+        margin: 50px 0 50px 0;
+        padding: 15px 15px;
+        text-align: center;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        background: linear-gradient(-135deg, #5BBD50, #E24425);
+        opacity: .8 !important;
+        overflow: hidden;
+    }
+    .message-head-top h4 {
+        position:relative;
+        color: #313131;
+        font-family: 'Lobster Two', cursive;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .message-head-bottom h4 {
+        position:relative;
+        color: #f5f5f5;
+        font-family: 'Lobster Two';
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 1px;
+    }
+    .success-image {
+        text-align:center;
+        margin-bottom:12px;
+    }
+    .success-image img{
+        height:86px;
+        width: 86px;
+        opacity: .4;
+    }
+    .success-header h4 {
+        text-align: center;
+        color: #515151;
+        font-size: 20px;
+        font-family: cursive;
+        font-weight: 700;
+    }
+    
+</style>
+
+<div class="content">
+    <div class="main">
+        <div class="container">
+            <div class="top-wrapper wow fadeInLeft" data-wow-delay="0.7s">
+                <div class="message-head-top">
+                    <h4>>>>>> Registration Success <<<<<</h4>
+                </div>
+            </div>
+            <div class="verification wow fadeInLeft" data-wow-delay="0.7s">
+                <div class="success-image">
+                    <img src="~/Content/Custom/images/pngwing.com.png" />
+                </div>
+                <div class="success-header">
+                    <h4>Thank You For Signing Up</h4>
+                </div>
+            </div>
+            <div class="bottom-wrapper wow fadeInRight" data-wow-delay="0.7s">
+                <div class="message-head-bottom">
+                    <h4 class="scroll-text">We've sent a verification link to your email address. Now please verify your account.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+
+	function textscroller() {
+
+		var scrolltext = $('h4.scroll-text');
+		var width = scrolltext.width(); 
+        var horizontalAdj = - width + 200; 
+
+		scrolltext.animate({
+			'left': [horizontalAdj, 'linear']
+		}, 30000, function () {
+            scrolltext.css('left', 900);
+			textscroller(); 
+		});
+	}
+	textscroller();
+
+})();
+</script>

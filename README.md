@@ -13,7 +13,7 @@
 <img alt="home page" src="/FLRApplication/Content/Custom/images/screenshots/Home.png">
 
 ## Login Page
-<img alt="login page" src="/FLRApplication/Content/Custom/images/screenshots/Home.png">
+<img alt="login page" src="/FLRApplication/Content/Custom/images/screenshots/Login.png">
 
 
 

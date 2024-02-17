@@ -1,10 +1,9 @@
 # Food Lover's Restaurant
 
-## Online Restaurant Web Application
+## Online Restaurant Web Application - C# ASP.NET MVC 5
 
-## C# ASP.NET MVC 5
 
-# Project Demo Screenshots
+# Project Screenshots
 
 ## Home Page
 <img alt="home page" src="/FLRApplication/Content/Custom/images/screenshots/Home.png">
